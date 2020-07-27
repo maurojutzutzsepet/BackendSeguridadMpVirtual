@@ -1,0 +1,38 @@
+parameters:
+  dpiUserBody:
+    in: body
+    name: body
+    description: DPI o Email
+    required: true
+    type: object
+    properties:
+      dpiuser:
+        type: string
+  cuiParams:
+    in: path
+    name: cui
+    description: cui
+    type: string
+    required: true        
+  dpiChangeTemporalPasswordUserBody:
+    in: body
+    name: body
+    description: CUI, nueva contraseña y confirmación de la nueva contraseña
+    required: true
+    type: object
+    properties:      
+      newPassword:
+        type: string
+      confirmPass:
+        type: string
+  dpiChangePasswordUserBody:
+    in: body
+    name: body
+    description: CUI, contraseña actual, nueva contraseña
+    required: true
+    type: object
+    properties:      
+      password:
+        type: string
+      newPassword:
+        type: string

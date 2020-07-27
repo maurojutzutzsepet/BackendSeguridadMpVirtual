@@ -1,0 +1,38 @@
+parameters:
+  systemHeader:
+    in: header
+    name: system
+    description: System Header
+    required: true
+    type: string    
+  cuiHeader:
+    in: header
+    name: cui
+    description: CUI Header
+    required: true
+    type: string
+  rolHeader:
+    in: header
+    name: rol
+    description: Rol Header
+    required: true
+    type: string
+  actionHeader:
+    in: header
+    name: action
+    description: Action Header
+    required: true
+    type: string
+  envHeader:
+    in: header
+    name: env
+    description: Env Header
+    required: true
+    type: string
+
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: authorization
+    in: header
+    template: "Bearer {apiKey}"

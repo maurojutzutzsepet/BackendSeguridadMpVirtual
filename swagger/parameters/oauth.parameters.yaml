@@ -1,0 +1,14 @@
+parameters:
+  bodyLogin:
+    in: body
+    name: body
+    description: Información para inicio de sesión utilizando OAuth2
+    required: true
+    schema:
+      $ref: "#/definitions/User"
+  refreshToken:
+    in: path
+    name: refreshToken
+    description: refreshToken
+    type: string
+    required: true

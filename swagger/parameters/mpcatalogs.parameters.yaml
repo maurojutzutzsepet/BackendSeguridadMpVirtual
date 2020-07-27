@@ -1,0 +1,7 @@
+parameters:
+  idMPCatalogParams:
+    in: path
+    name: id
+    description: id del catalogo
+    type: string
+    required: true   

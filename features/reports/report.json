@@ -1,0 +1,175 @@
+[
+  {
+    "description": "    Oauth",
+    "keyword": "Feature",
+    "name": "Oauth",
+    "line": 1,
+    "id": "oauth",
+    "tags": [],
+    "uri": "features\\scenarios\\Oauth.feature",
+    "elements": [
+      {
+        "id": "oauth;get-access-token-by-username-and-password",
+        "keyword": "Scenario",
+        "line": 4,
+        "name": "get access token by username and password",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "features\\support\\core\\hooks.js:76"
+            },
+            "result": {
+              "status": "failed",
+              "duration": 51308000000,
+              "error_message": "Error: function timed out, ensure the promise resolves within 20000 milliseconds\n    at Timeout._onTimeout (C:\\Ambientes\\Ambiente-js\\Back-End\\2020-24_mp_backend-morpheus-seguridad\\node_modules\\cucumber\\lib\\user_code_runner.js:76:18)\n    at listOnTimeout (internal/timers.js:531:17)\n    at processTimers (internal/timers.js:475:7)"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 5,
+            "name": "set my username \"1111111111107\" and password \"Soporte123*\"",
+            "match": {
+              "location": "features\\definitions\\Oauth.js:22"
+            },
+            "result": {
+              "status": "skipped"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 6,
+            "name": "send my credentials to Seguridad API",
+            "match": {
+              "location": "features\\definitions\\Oauth.js:32"
+            },
+            "result": {
+              "status": "skipped"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 7,
+            "name": "I get my user data",
+            "match": {
+              "location": "features\\definitions\\Oauth.js:43"
+            },
+            "result": {
+              "status": "skipped"
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "features\\support\\core\\hooks.js:100"
+            },
+            "result": {
+              "status": "failed",
+              "duration": 3000000,
+              "error_message": "ReferenceError: testController is not defined\n    at exports.addErrorToController (C:\\Ambientes\\Ambiente-js\\Back-End\\2020-24_mp_backend-morpheus-seguridad\\features\\support\\core\\errorHandling.js:7:3)\n    at Object.<anonymous> (C:\\Ambientes\\Ambiente-js\\Back-End\\2020-24_mp_backend-morpheus-seguridad\\features\\support\\core\\hooks.js:105:5)"
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "features\\support\\core\\hooks.js:90"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "oauth;get-the-error-message-by-incorrect-username-and-password",
+        "keyword": "Scenario",
+        "line": 9,
+        "name": "get the error message by incorrect username and password",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "features\\support\\core\\hooks.js:76"
+            },
+            "result": {
+              "status": "failed",
+              "duration": 20058000000,
+              "error_message": "Error: function timed out, ensure the promise resolves within 20000 milliseconds\n    at Timeout._onTimeout (C:\\Ambientes\\Ambiente-js\\Back-End\\2020-24_mp_backend-morpheus-seguridad\\node_modules\\cucumber\\lib\\user_code_runner.js:76:18)\n    at listOnTimeout (internal/timers.js:531:17)\n    at processTimers (internal/timers.js:475:7)"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 10,
+            "name": "set my username \"1111111111107\" and password \"Soporte123\"",
+            "match": {
+              "location": "features\\definitions\\Oauth.js:22"
+            },
+            "result": {
+              "status": "skipped"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 11,
+            "name": "send my credentials to Seguridad API",
+            "match": {
+              "location": "features\\definitions\\Oauth.js:32"
+            },
+            "result": {
+              "status": "skipped"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 12,
+            "name": "I don't get my user data",
+            "match": {
+              "location": "features\\definitions\\Oauth.js:50"
+            },
+            "result": {
+              "status": "skipped"
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "features\\support\\core\\hooks.js:100"
+            },
+            "result": {
+              "status": "failed",
+              "duration": 3000000,
+              "error_message": "ReferenceError: testController is not defined\n    at exports.addErrorToController (C:\\Ambientes\\Ambiente-js\\Back-End\\2020-24_mp_backend-morpheus-seguridad\\features\\support\\core\\errorHandling.js:7:3)\n    at Object.<anonymous> (C:\\Ambientes\\Ambiente-js\\Back-End\\2020-24_mp_backend-morpheus-seguridad\\features\\support\\core\\hooks.js:105:5)"
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "features\\support\\core\\hooks.js:90"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1000000
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

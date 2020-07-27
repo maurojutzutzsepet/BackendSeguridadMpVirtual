@@ -1,0 +1,114 @@
+image: mpguatemalasicomp/pcontainers:centos-ci
+
+# se colocan en cache las siguientes carpetas
+cache:
+  paths:
+    - node_modules/
+    - .yarn
+
+# stages definidos
+stages:
+  - build_and_test
+  - pruebas_funcionales
+  - pruebas_unitarias
+  - deploy_to_development
+  - deploy_to_staging
+
+Build_and_Test:
+  stage: build_and_test
+  except:
+  - master
+  tags:
+    - test
+  before_script:
+    - yarn install --frozen-lockfile
+  script:
+    #Build script
+    - export PORT=80
+    - yarn config set cache-folder .yarn
+
+    
+Cucumber_test:
+  stage: pruebas_funcionales
+  except:
+  - master
+  tags:
+    - test
+  script:
+    #Test
+    - pm2 start index.js
+    - yarn test-centos --world-parameters '{"report-project":"'$CI_PROJECT_NAME'", "report-branch":"'$CI_COMMIT_REF_NAME'", "report-number":"'$CI_COMMIT_SHORT_SHA'"}'
+  after_script:
+    - ls -l
+  when: always
+  dependencies:
+    - Build_and_Test
+   
+Jest_test:
+  stage: pruebas_unitarias
+  except:
+  - master
+  tags:
+    - test
+  script:
+    - yarn test:CI
+  after_script:
+    - mv coverage/unit /home/httpd-reports/backend/$CI_PROJECT_NAME/$CI_COMMIT_REF_NAME/$CI_PROJECT_NAME-$CI_COMMIT_REF_NAME-build-id-$CI_COMMIT_SHORT_SHA/unit
+    - mv coverage/lcov-report /home/httpd-reports/backend/$CI_PROJECT_NAME/$CI_COMMIT_REF_NAME/$CI_PROJECT_NAME-$CI_COMMIT_REF_NAME-build-id-$CI_COMMIT_SHORT_SHA/coverage
+    # send slack message
+    - curl -X POST --data-urlencode "payload={\"channel\":\"#backend\", \"username\":\"gitlab\", \"text\":\"Ya puedes revisar el resultado de los reportes en http://devops.mp:8000/backend/$CI_PROJECT_NAME/$CI_COMMIT_REF_NAME/$CI_PROJECT_NAME-$CI_COMMIT_REF_NAME-build-id-$CI_COMMIT_SHORT_SHA \"}" https://hooks.slack.com/services/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
+  when: always
+  dependencies:
+    - Cucumber_test
+  environment:
+    name: devops-testing
+    url: http://devops.mp:8000/backend/$CI_PROJECT_NAME
+
+  
+Deploy to development:
+  stage: deploy_to_development
+  tags:
+    - delivery-development
+  only:
+    - development
+  script:
+    # stop old container
+    - if sudo docker stop "$CI_PROJECT_NAME"; then echo "stopped"; else echo "inexisting"; fi
+    # manage repos
+    - cd ..
+    - if sudo chown -R devops /home/devops/backends/"$CI_PROJECT_NAME"; then echo "chown executed"; else echo "not executed"; fi
+    - rm -rf /home/devops/backends/"$CI_PROJECT_NAME"
+    - cp -R "$CI_PROJECT_NAME" /home/devops/backends/"$CI_PROJECT_NAME"
+    - sudo docker pull mpguatemalasicomp/pcontainers:centos-dev
+    # run the service on its container
+    - echo docker run --rm -d --name "$CI_PROJECT_NAME" -p `expr 10000 + "$CI_PROJECT_ID"`:80 -v /home/devops/backends/"$CI_PROJECT_NAME":/opt -v /home/devops/backends/morpheus.config.js:/opt/morpheus.config.js mpguatemalasicomp/pcontainers:centos-dev bash -c "cd /opt; yarn install --frozen-lockfile; SWAGGER_PORT=`expr 10000 + "$CI_PROJECT_ID"` pm2-runtime start morpheus.config.js --only "$CI_PROJECT_NAME" --env development"
+    - sudo docker run --rm -d --name "$CI_PROJECT_NAME" -p `expr 10000 + "$CI_PROJECT_ID"`:80 -v /home/devops/backends/"$CI_PROJECT_NAME":/opt -v /home/devops/backends/morpheus.config.js:/opt/morpheus.config.js mpguatemalasicomp/pcontainers:centos-dev bash -c "cd /opt; yarn install --frozen-lockfile; SWAGGER_PORT=`expr 10000 + "$CI_PROJECT_ID"` pm2-runtime start morpheus.config.js --only "$CI_PROJECT_NAME" --env development"
+    - echo http://envd.mp:`expr 10000 + "$CI_PROJECT_ID"`/
+  when: manual
+  environment:
+    name: development
+    url: http://envd.mp:10$CI_PROJECT_ID
+
+Deploy to staging:
+  stage: deploy_to_staging
+  tags:
+    - delivery-staging
+  only:
+    - staging
+  script:
+    # stop old container
+    - if sudo docker stop "$CI_PROJECT_NAME"; then echo "stopped"; else echo "inexisting"; fi
+    # manage repos
+    - cd ..
+    - if sudo chown -R devops /home/devops/backends/"$CI_PROJECT_NAME"; then echo "chown executed"; else echo "not executed"; fi
+    - rm -rf /home/devops/backends/"$CI_PROJECT_NAME"
+    - cp -R "$CI_PROJECT_NAME" /home/devops/backends/"$CI_PROJECT_NAME"
+    - sudo docker pull mpguatemalasicomp/pcontainers:centos-stag
+    # run the service on its container
+    - echo docker run --rm -d --name "$CI_PROJECT_NAME" -p `expr 10000 + "$CI_PROJECT_ID"`:80 -v /home/devops/backends/"$CI_PROJECT_NAME":/opt -v /home/devops/backends/morpheus.config.js:/opt/morpheus.config.js mpguatemalasicomp/pcontainers:centos-stag bash -c "cd /opt; yarn install --frozen-lockfile; SWAGGER_PORT=`expr 10000 + "$CI_PROJECT_ID"` pm2-runtime start morpheus.config.js --only "$CI_PROJECT_NAME" --env staging"
+    - sudo docker run --rm -d --name "$CI_PROJECT_NAME" -p `expr 10000 + "$CI_PROJECT_ID"`:80 -v /home/devops/backends/"$CI_PROJECT_NAME":/opt -v /home/devops/backends/morpheus.config.js:/opt/morpheus.config.js mpguatemalasicomp/pcontainers:centos-stag bash -c "cd /opt; yarn install --frozen-lockfile; SWAGGER_PORT=`expr 10000 + "$CI_PROJECT_ID"` pm2-runtime start morpheus.config.js --only "$CI_PROJECT_NAME" --env staging"
+    - echo http://envs.mp:`expr 10000 + "$CI_PROJECT_ID"`/
+  when: manual
+  environment:
+    name: staging
+    url: http://envs.mp:10$CI_PROJECT_ID

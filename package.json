@@ -1,0 +1,59 @@
+{
+  "name": "2020-24_mp_backend-morpheus-seguridad",
+  "version": "1.0.0",
+  "description": "Base backend for new projects in MP.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "test:CI": "set CI=true && jest --env=jsdom --coverage --testResultsProcessor=./node_modules/jest-html-reporter",
+    "test-centos": "./node_modules/.bin/cucumber-js --format json:features/reports/report.json --world-parameters \"{\\\"browser\\\": \\\"chrome:headless\\\", \\\"report-project\\\":\\\"project1\\\", \\\"report-branch\\\":\\\"master\\\", \\\"report-number\\\":\\\"1\\\"}\"",
+    "test-chrome-reports": "./node_modules/.bin/cucumber-js.cmd  --format json:./features/reports/report.json --world-parameters \"{\\\"browser\\\": \\\"chrome\\\", \\\"report-project\\\":\\\"project1\\\", \\\"report-branch\\\":\\\"master\\\", \\\"report-number\\\":\\\"1\\\"}\"",
+    "test-chrome-reports-headless": "./node_modules/.bin/cucumber-js.cmd --format json:./features/reports/report.json --world-parameters \"{\\\"browser\\\": \\\"chrome:headless\\\", \\\"report-project\\\":\\\"project1\\\", \\\"report-branch\\\":\\\"master\\\", \\\"report-number\\\":\\\"1\\\"}\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://gitdesa.mp/base-projects/2020-4_mp_backend-react-base-project.git"
+  },
+  "keywords": [
+    "base",
+    "backend",
+    "mp"
+  ],
+  "author": "DG",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.18.1",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.0",
+    "express-winston": "^3.1.0",
+    "helmet": "^3.21.2",
+    "md5": "^2.2.1",
+    "moment": "^2.24.0",
+    "mongoose": "^5.5.10",
+    "pm2": "^4.2.3",
+    "random-js": "^2.0.0",
+    "randomstring": "^1.1.5",
+    "redis": "^3.0.2",
+    "request-ip": "^2.1.3",
+    "sequelize": "^5.21.5",
+    "swagger-jsdoc": "^3.5.0",
+    "swagger-ui-express": "^4.1.3",
+    "tedious": "^8.0.1",
+    "winston": "^3.2.1",
+    "winston-mongodb": "^4.0.3",
+    "dotenv": "^8.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2",
+    "babel-jest": "^25.1.0",
+    "babel-preset-es2020": "^1.0.2",
+    "babel-preset-stage-2": "^6.24.1",
+    "cucumber": "^6.0.5",
+    "cucumber-html-reporter": "^5.1.0",
+    "eslint-config-google": "^0.14.0",
+    "jest": "^25.1.0",
+    "jest-html-reporter": "^2.8.0",
+    "testcafe": "^1.8.2"
+  }
+}

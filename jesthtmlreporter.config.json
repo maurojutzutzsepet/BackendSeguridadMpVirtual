@@ -1,0 +1,5 @@
+{
+  "pageTitle": "Jest Reports",
+  "outputPath": "coverage/unit/index.html",
+  "includeFailureMsg": true
+}
